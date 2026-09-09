@@ -18,6 +18,8 @@ const state = {
   entityType: "class",
   query: "",
   selectedId: "",
+  selectedDay: 1,
+  view: "day",
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -40,6 +42,12 @@ function initializeSelection() {
   const params = new URLSearchParams(window.location.search);
   const requestedType = params.get("type");
   const requestedId = params.get("id");
+  const requestedDay = Number(params.get("day"));
+
+  state.selectedDay = ESTONIAN_DAYS.some((day) => day.number === requestedDay)
+    ? requestedDay
+    : getDefaultDay();
+  state.view = params.get("view") === "week" ? "week" : "day";
 
   if (FILTER_CONFIG[requestedType]) {
     state.entityType = requestedType;
@@ -56,6 +64,10 @@ function initializeSelection() {
   } else if (!requestedType && savedIsValid) {
     state.entityType = saved.type;
     state.selectedId = saved.id;
+    if (ESTONIAN_DAYS.some((day) => day.number === Number(saved.day))) {
+      state.selectedDay = Number(saved.day);
+    }
+    state.view = saved.view === "week" ? "week" : "day";
   } else {
     state.selectedId = entities[0]?.id || "";
   }
@@ -89,6 +101,23 @@ function bindControls() {
   });
 
   document.querySelector("#timetable-detail")?.addEventListener("click", (event) => {
+    const dayButton = event.target.closest("[data-selected-day]");
+    if (dayButton) {
+      state.selectedDay = Number(dayButton.dataset.selectedDay);
+      state.view = "day";
+      updateUrl();
+      renderDetail();
+      return;
+    }
+
+    const viewButton = event.target.closest("[data-toggle-view]");
+    if (viewButton) {
+      state.view = state.view === "day" ? "week" : "day";
+      updateUrl();
+      renderDetail();
+      return;
+    }
+
     const saveButton = event.target.closest("[data-save-selection]");
     if (saveButton) {
       saveSelection();
@@ -194,9 +223,14 @@ function renderDetail() {
   actions.className = "detail-actions";
   const saveButton = createActionButton("Salvesta vaikevaateks", "button-quiet");
   saveButton.dataset.saveSelection = "true";
+  const viewButton = createActionButton(
+    state.view === "day" ? "Nädalavaade" : "Päevavaade",
+    "button-quiet",
+  );
+  viewButton.dataset.toggleView = "true";
   const printButton = createActionButton("Prindi", "button-primary");
   printButton.dataset.printTimetable = "true";
-  actions.append(saveButton, printButton);
+  actions.append(saveButton, viewButton, printButton);
   header.append(headingGroup, actions);
   panel.append(header);
 
@@ -208,7 +242,13 @@ function renderDetail() {
   const note = document.createElement("p");
   note.className = "timetable-note";
   note.textContent = `${selectedLessons.length} tunnikirjet · aktiivne tund on märgitud rohelisega.`;
-  panel.append(note, createWeekGrid(selectedLessons));
+  panel.append(note);
+
+  if (state.view === "day") {
+    panel.append(createDayTabs(), createDaySchedule(selectedLessons));
+  } else {
+    panel.append(createWeekGrid(selectedLessons));
+  }
   document.title = `${entity.name} · Tunniplaan | Rakvere Eragümnaasium`;
 }
 
@@ -218,6 +258,66 @@ function createActionButton(label, className) {
   button.className = `button ${className} timetable-button`;
   button.textContent = label;
   return button;
+}
+
+function createDayTabs() {
+  const tabs = document.createElement("div");
+  tabs.className = "day-tabs";
+  tabs.setAttribute("role", "tablist");
+  tabs.setAttribute("aria-label", "Tunniplaani päeva valik");
+
+  ESTONIAN_DAYS.forEach((day) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `day-tab${day.number === state.selectedDay ? " is-active" : ""}`;
+    button.dataset.selectedDay = day.number;
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-selected", String(day.number === state.selectedDay));
+    button.textContent = day.name;
+    tabs.append(button);
+  });
+
+  return tabs;
+}
+
+function createDaySchedule(lessons) {
+  const schedule = document.createElement("div");
+  schedule.className = "day-schedule";
+  schedule.setAttribute("role", "table");
+
+  getPeriodNumbers().forEach((periodNumber) => {
+    const row = document.createElement("div");
+    row.className = "day-schedule-row";
+
+    const period = findPeriod(state.selectedDay, periodNumber);
+    const label = document.createElement("div");
+    label.className = "day-period-label";
+    const periodNumberLabel = document.createElement("strong");
+    periodNumberLabel.textContent = `${periodNumber}. tund`;
+    const periodTime = document.createElement("span");
+    periodTime.textContent = `${period?.start || ""}–${period?.end || ""}`;
+    label.append(periodNumberLabel, periodTime);
+
+    const content = document.createElement("div");
+    content.className = "day-period-content";
+    const matching = lessons.flatMap((lesson) => lesson.slots
+      .filter((slot) => slot.day === state.selectedDay && slot.period === periodNumber)
+      .map((slot) => ({ lesson, slot })));
+
+    if (matching.length === 0) {
+      const empty = document.createElement("span");
+      empty.className = "empty-period";
+      empty.textContent = "Vaba tund";
+      content.append(empty);
+    } else {
+      matching.forEach(({ lesson, slot }) => content.append(createLessonBlock(lesson, slot)));
+    }
+
+    row.append(label, content);
+    schedule.append(row);
+  });
+
+  return schedule;
 }
 
 function createWeekGrid(lessons) {
@@ -275,6 +375,11 @@ function getPeriodNumbers() {
 
 function findPeriod(day, periodNumber) {
   return state.data.periods.find((period) => period.day === day && period.period === periodNumber);
+}
+
+function getDefaultDay() {
+  const today = new Date().getDay();
+  return ESTONIAN_DAYS.some((day) => day.number === today) ? today : 1;
 }
 
 function createLessonBlock(lesson, slot) {
@@ -340,6 +445,8 @@ function saveSelection() {
   localStorage.setItem("timetable-default-selection", JSON.stringify({
     type: state.entityType,
     id: state.selectedId,
+    day: state.selectedDay,
+    view: state.view,
   }));
 }
 
@@ -347,6 +454,12 @@ function updateUrl() {
   const params = new URLSearchParams(window.location.search);
   params.set("type", state.entityType);
   params.set("id", state.selectedId);
+  params.set("day", String(state.selectedDay));
+  if (state.view === "week") {
+    params.set("view", "week");
+  } else {
+    params.delete("view");
+  }
   window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
 }
 

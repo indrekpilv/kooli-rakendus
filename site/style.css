@@ -863,6 +863,91 @@ a.service-card:hover {
   margin: 17px 0 14px;
 }
 
+.day-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #f7fbf7;
+}
+
+.day-tab {
+  flex: 1 1 0;
+  min-height: 39px;
+  padding: 8px 11px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.day-tab:hover,
+.day-tab.is-active {
+  color: var(--green-900);
+  border-color: #bfe2c5;
+  background: white;
+  box-shadow: 0 4px 10px rgba(13, 75, 43, 0.06);
+}
+
+.day-schedule {
+  display: grid;
+  gap: 7px;
+}
+
+.day-schedule-row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 8px;
+  min-height: 75px;
+}
+
+.day-period-label,
+.day-period-content {
+  border: 1px solid var(--line);
+  background: white;
+}
+
+.day-period-label {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: var(--green-900);
+}
+
+.day-period-label strong {
+  font-size: 0.8rem;
+}
+
+.day-period-label span {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.day-period-content {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 6px;
+  border-radius: 12px;
+}
+
+.empty-period {
+  padding: 8px 10px;
+  color: #a6b8ab;
+  font-size: 0.78rem;
+}
+
 .week-scroll {
   overflow-x: auto;
   border: 1px solid var(--line);
@@ -1032,6 +1117,33 @@ a.service-card:hover {
 
   .timetable-button {
     flex: 1 1 auto;
+  }
+
+  .day-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .day-tab {
+    flex: 0 0 auto;
+    min-width: 92px;
+  }
+
+  .day-schedule-row {
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .day-period-label {
+    padding: 8px;
+  }
+
+  .day-period-label strong {
+    font-size: 0.72rem;
+  }
+
+  .day-period-label span {
+    font-size: 0.65rem;
   }
 }
 
