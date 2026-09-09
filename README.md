@@ -1,6 +1,6 @@
 # Rakvere Eragümnaasiumi kiirlinkide rakendus
 
-Esimene lihtne versioon kooli veebirakendusest. Praegu sisaldab see avalehte ja nädalamenüüd. Tunniplaani moodul lisatakse hiljem eraldi.
+Kooli lihtne veebirakendus, mis sisaldab avalehte, nädalamenüüd ja tunniplaani.
 
 ## Kohalik vaatamine
 
@@ -62,6 +62,18 @@ Kanakotlet, kartul ja salat
 ```
 
 Oluline on, et päevad, toidukorrad ja menüüread jääksid eraldi ridadele.
+
+## Tunniplaani muutmine
+
+Untise XML-fail asub failis `data/tunniplaan.xml`. Kui Untisest tuleb uus XML:
+
+1. asenda fail `data/tunniplaan.xml` uue XML-failiga;
+2. tee GitHubis muudatus harusse `main`;
+3. GitHub Actions koostab automaatselt faili `site/data/tunniplaan.json` ja avaldab uue tunniplaani.
+
+`deploy.yml` faili ei ole tavapärase XML-i vahetamise korral vaja muuta.
+
+Tunniplaani lehel saab otsida klasse, õpetajaid ja ruume. Valitud vaate võib salvestada vaikevaateks ning tunniplaani saab ka välja printida.
 
 ## GitHub Pagesi seadistamine
 
