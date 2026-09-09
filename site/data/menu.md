@@ -1,12 +1,12 @@
-Toitlustamise nädal 04.09 – 18.09
+Toitlustamise nädal 07.09 – 11.09
 
 ### Esmaspäev
 
 #### Hommikusöök
 
-Kaerahelbepuder, keedis
-Võileib singiga, võisai juustuga
-Mahlajook
+- Kaerahelbepuder, keedis
+- Võileib singiga, võisai juustuga
+- Mahlajook
 
 #### Lõunasöök
 

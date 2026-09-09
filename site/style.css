@@ -426,6 +426,10 @@ a.service-card:hover {
   gap: 16px;
 }
 
+.menu-preview-grid-single {
+  grid-template-columns: 1fr;
+}
+
 .day-card {
   padding: 25px;
   border: 1px solid var(--line);

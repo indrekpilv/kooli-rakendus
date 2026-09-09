@@ -1,4 +1,13 @@
 const MENU_URL = `data/menu.json?v=${Date.now()}`;
+const ESTONIAN_WEEKDAYS = [
+  "Pühapäev",
+  "Esmaspäev",
+  "Teisipäev",
+  "Kolmapäev",
+  "Neljapäev",
+  "Reede",
+  "Laupäev",
+];
 
 document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("[data-menu-preview]")) {
@@ -36,16 +45,31 @@ function renderMenuPreview(container, menu) {
     container.append(createDemoNotice());
   }
 
-  const days = Array.isArray(menu.days) ? menu.days.slice(0, 2) : [];
+  const days = getTodayAndNextMenuDays(menu.days);
   if (days.length === 0) {
-    container.append(createEmptyState("Menüüandmed ei ole veel lisatud."));
+    container.append(createEmptyState("Tänase päeva menüüd ei ole praegu lisatud."));
     return;
   }
 
   const grid = document.createElement("div");
-  grid.className = "menu-preview-grid";
+  grid.className = days.length === 1
+    ? "menu-preview-grid menu-preview-grid-single"
+    : "menu-preview-grid";
   days.forEach((day) => grid.append(createDayCard(day, true)));
   container.append(grid);
+}
+
+function getTodayAndNextMenuDays(days) {
+  if (!Array.isArray(days) || days.length === 0) return [];
+
+  const todayName = ESTONIAN_WEEKDAYS[new Date().getDay()];
+  const todayIndex = days.findIndex((day) => (
+    String(day.day || "").trim().toLocaleLowerCase("et-EE")
+    === todayName.toLocaleLowerCase("et-EE")
+  ));
+
+  if (todayIndex === -1) return [];
+  return days.slice(todayIndex, todayIndex + 2);
 }
 
 function renderFullMenu(container, menu) {
