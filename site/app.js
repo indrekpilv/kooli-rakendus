@@ -1,12 +1,12 @@
 const MENU_URL = `data/menu.json?v=${Date.now()}`;
 const ESTONIAN_WEEKDAYS = [
-  "Pühapäev",
   "Esmaspäev",
   "Teisipäev",
   "Kolmapäev",
   "Neljapäev",
   "Reede",
   "Laupäev",
+  "Pühapäev",
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
