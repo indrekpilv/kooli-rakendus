@@ -95,47 +95,82 @@ function createDayCard(day, compact) {
     header.append(date);
   }
 
+  const content = document.createElement("div");
+  content.className = "day-content";
+
+  const mealSections = Array.isArray(day.meals) ? day.meals : [];
+  if (mealSections.length > 0) {
+    mealSections.forEach((meal) => content.append(createMealSection(meal)));
+  } else {
+    content.append(createMealList(day.items));
+  }
+
+  card.append(header, content);
+  return card;
+}
+
+function createMealSection(meal) {
+  const section = document.createElement("section");
+  section.className = "meal-section";
+
+  const heading = document.createElement("h4");
+  heading.className = "meal-heading";
+  heading.textContent = meal.name || "Toidukord";
+  section.append(heading, createMealList(meal.items));
+  return section;
+}
+
+function createMealList(meals) {
   const items = document.createElement("ul");
   items.className = "meal-list";
-  const meals = Array.isArray(day.items) ? day.items : [];
+  const mealItems = Array.isArray(meals) ? meals : [];
 
-  meals.forEach((meal) => {
-    const item = document.createElement("li");
-    const marker = document.createElement("span");
-    marker.className = "meal-marker";
-    marker.setAttribute("aria-hidden", "true");
-    item.append(marker);
+  mealItems.forEach((meal) => items.append(createMealItem(meal)));
 
-    const text = document.createElement("span");
-    if (typeof meal === "string") {
-      text.textContent = meal;
-    } else {
-      text.textContent = meal.name || "";
-      if (meal.note) {
-        const note = document.createElement("small");
-        note.textContent = meal.note;
-        text.append(note);
-      }
-    }
-    item.append(text);
-    items.append(item);
-  });
-
-  if (meals.length === 0) {
+  if (mealItems.length === 0) {
     const empty = document.createElement("li");
     empty.textContent = "Menüü puudub";
     empty.className = "meal-empty";
     items.append(empty);
   }
 
-  card.append(header, items);
-  return card;
+  return items;
+}
+
+function createMealItem(meal) {
+  const item = document.createElement("li");
+  const marker = document.createElement("span");
+  marker.className = "meal-marker";
+  marker.setAttribute("aria-hidden", "true");
+  item.append(marker);
+
+  const text = document.createElement("span");
+  const value = typeof meal === "string" ? meal : (meal.name || "");
+  const audienceMatch = value.match(/^([^:]{1,60}klass):\s*(.+)$/i);
+
+  if (audienceMatch) {
+    const audience = document.createElement("strong");
+    audience.className = "meal-audience";
+    audience.textContent = `${audienceMatch[1]}:`;
+    text.append(audience, ` ${audienceMatch[2]}`);
+  } else {
+    text.textContent = value;
+  }
+
+  if (typeof meal === "object" && meal.note) {
+    const note = document.createElement("small");
+    note.textContent = meal.note;
+    text.append(note);
+  }
+
+  item.append(text);
+  return item;
 }
 
 function createDemoNotice() {
   const notice = document.createElement("div");
   notice.className = "demo-notice";
-  notice.textContent = "Praegu kuvatakse näidismenüüd. Kooli menüü saab lisada failis site/data/menu.json.";
+  notice.textContent = "Praegu kuvatakse näidismenüüd. Kooli menüü saab lisada failis site/data/menu.md.";
   return notice;
 }
 
@@ -152,6 +187,6 @@ function renderError(error, targetId) {
     : document.querySelector(`#${targetId}`);
 
   if (!target) return;
-  target.replaceChildren(createEmptyState("Menüüandmete laadimine ebaõnnestus. Kontrolli data/menu.json faili."));
+  target.replaceChildren(createEmptyState("Menüüandmete laadimine ebaõnnestus. Kontrolli site/data/menu.md faili."));
   console.error(error);
 }
