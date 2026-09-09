@@ -434,6 +434,25 @@ a.service-card:hover {
   box-shadow: var(--shadow-small);
 }
 
+.day-content {
+  display: grid;
+  gap: 19px;
+}
+
+.meal-section {
+  display: grid;
+  gap: 9px;
+}
+
+.meal-heading {
+  margin: 0;
+  color: var(--green-700);
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .day-header {
   display: flex;
   align-items: baseline;
@@ -478,6 +497,11 @@ a.service-card:hover {
   margin-top: 2px;
   color: var(--muted);
   font-size: 0.76rem;
+}
+
+.meal-audience {
+  color: var(--green-800);
+  font-weight: 800;
 }
 
 .meal-marker {
