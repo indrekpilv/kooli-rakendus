@@ -1,4 +1,4 @@
-Toitlustamise nädal 07.09 – 11.09
+Toitlustamise nädal 04.09 – 18.09
 
 ### Esmaspäev
 
