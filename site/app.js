@@ -38,48 +38,145 @@ async function loadMenu() {
   }
 }
 
+function getWeeks(menu) {
+  if (Array.isArray(menu.weeks)) {
+    return menu.weeks;
+  }
+
+  // Backwards compatibility for the previous one-week JSON format.
+  if (Array.isArray(menu.days)) {
+    return [{
+      weekLabel: menu.weekLabel || "",
+      startDate: null,
+      endDate: null,
+      days: menu.days,
+    }];
+  }
+
+  return [];
+}
+
+function localDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function findCurrentWeek(weeks, date) {
+  const today = localDateKey(date);
+  return weeks.find((week) => (
+    week.startDate && week.endDate
+    && week.startDate <= today
+    && today <= week.endDate
+  ));
+}
+
+function findUpcomingWeek(weeks, date) {
+  const today = localDateKey(date);
+  return weeks
+    .filter((week) => week.startDate && week.startDate > today)
+    .sort((first, second) => first.startDate.localeCompare(second.startDate))[0];
+}
+
+function getSelectedWeek(menu, date = new Date()) {
+  const weeks = getWeeks(menu);
+  const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+
+  if (isWeekend) {
+    return findUpcomingWeek(weeks, date) || null;
+  }
+
+  return findCurrentWeek(weeks, date)
+    || weeks.find((week) => !week.startDate && !week.endDate)
+    || null;
+}
+
+function getMenuPreviewView(menu, date = new Date()) {
+  const weeks = getWeeks(menu);
+  const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+
+  if (isWeekend) {
+    const upcomingWeek = findUpcomingWeek(weeks, date);
+    if (!upcomingWeek) {
+      return {
+        heading: "Järgmise nädala menüü",
+        days: [],
+        emptyMessage: "Järgmise nädala menüü ei ole veel lisatud.",
+      };
+    }
+    return {
+      heading: "Järgmise nädala menüü",
+      days: upcomingWeek.days.slice(0, 2),
+      emptyMessage: "Järgmise nädala menüü ei ole veel lisatud.",
+    };
+  }
+
+  const selectedWeek = getSelectedWeek(menu, date);
+  if (!selectedWeek) {
+    return {
+      heading: "Tänane ja homne menüü",
+      days: [],
+      emptyMessage: "Selle nädala menüü ei ole veel lisatud.",
+    };
+  }
+
+  const todayName = ESTONIAN_WEEKDAYS[date.getDay()];
+  const todayIndex = selectedWeek.days.findIndex((day) => (
+    String(day.day || "").trim().toLocaleLowerCase("et-EE")
+    === todayName.toLocaleLowerCase("et-EE")
+  ));
+
+  if (todayIndex === -1) {
+    return {
+      heading: "Tänane ja homne menüü",
+      days: [],
+      emptyMessage: "Tänase päeva menüüd ei ole praegu lisatud.",
+    };
+  }
+
+  return {
+    heading: "Tänane ja homne menüü",
+    days: selectedWeek.days.slice(todayIndex, todayIndex + 2),
+    emptyMessage: "Tänase päeva menüüd ei ole praegu lisatud.",
+  };
+}
+
 function renderMenuPreview(container, menu) {
   container.replaceChildren();
+  const view = getMenuPreviewView(menu);
+  const title = document.querySelector("#menu-preview-title");
+
+  if (title) {
+    title.textContent = view.heading;
+  }
 
   if (menu.demo) {
     container.append(createDemoNotice());
   }
 
-  const days = getTodayAndNextMenuDays(menu.days);
-  if (days.length === 0) {
-    container.append(createEmptyState("Tänase päeva menüüd ei ole praegu lisatud."));
+  if (view.days.length === 0) {
+    container.append(createEmptyState(view.emptyMessage));
     return;
   }
 
   const grid = document.createElement("div");
-  grid.className = days.length === 1
+  grid.className = view.days.length === 1
     ? "menu-preview-grid menu-preview-grid-single"
     : "menu-preview-grid";
-  days.forEach((day) => grid.append(createDayCard(day, true)));
+  view.days.forEach((day) => grid.append(createDayCard(day, true)));
   container.append(grid);
-}
-
-function getTodayAndNextMenuDays(days) {
-  if (!Array.isArray(days) || days.length === 0) return [];
-
-  const todayName = ESTONIAN_WEEKDAYS[new Date().getDay()];
-  const todayIndex = days.findIndex((day) => (
-    String(day.day || "").trim().toLocaleLowerCase("et-EE")
-    === todayName.toLocaleLowerCase("et-EE")
-  ));
-
-  if (todayIndex === -1) return [];
-  return days.slice(todayIndex, todayIndex + 2);
 }
 
 function renderFullMenu(container, menu) {
   container.replaceChildren();
-
+  const selectedWeek = getSelectedWeek(menu);
   const meta = document.querySelector("#menu-meta");
+
   if (meta) {
     meta.replaceChildren();
     const weekLabel = document.createElement("strong");
-    weekLabel.textContent = menu.weekLabel || "Kooli nädalamenüü";
+    weekLabel.textContent = selectedWeek?.weekLabel || menu.weekLabel || "Kooli nädalamenüü";
     meta.append(weekLabel);
     if (menu.updated) {
       const updated = document.createElement("span");
@@ -92,9 +189,13 @@ function renderFullMenu(container, menu) {
     container.append(createDemoNotice());
   }
 
-  const days = Array.isArray(menu.days) ? menu.days : [];
+  const days = selectedWeek?.days || [];
   if (days.length === 0) {
-    container.append(createEmptyState("Menüüandmed ei ole veel lisatud."));
+    const isWeekend = [0, 6].includes(new Date().getDay());
+    const message = isWeekend
+      ? "Järgmise nädala menüü ei ole veel lisatud."
+      : "Selle nädala menüü ei ole veel lisatud.";
+    container.append(createEmptyState(message));
     return;
   }
 
@@ -169,7 +270,7 @@ function createMealItem(meal) {
   item.append(marker);
 
   const text = document.createElement("span");
-  const value = typeof meal === "string" ? meal : (meal.name || "");
+  const value = typeof meal === "string" ? meal : (meal?.name || "");
   const audienceMatch = value.match(/^([^:]{1,60}klass):\s*(.+)$/i);
 
   if (audienceMatch) {
@@ -181,7 +282,7 @@ function createMealItem(meal) {
     text.textContent = value;
   }
 
-  if (typeof meal === "object" && meal.note) {
+  if (meal && typeof meal === "object" && meal.note) {
     const note = document.createElement("small");
     note.textContent = meal.note;
     text.append(note);

@@ -34,6 +34,18 @@ Toitlustamise nädal 07.09 – 11.09
 
 GitHub Actions teisendab faili automaatselt failiks `site/data/menu.json` ja avaldab selle. JSON-i ei ole vaja käsitsi muuta.
 
+Kui uus nädalamenüü saabub neljapäeval või reedel, ära kustuta vana nädala plokki. Kleebi uus plokk olemasoleva alla, näiteks:
+
+```text
+Toitlustamise nädal 07.09 – 11.09
+... vana nädala menüü ...
+
+Toitlustamise nädal 14.09 – 18.09
+... järgmise nädala menüü ...
+```
+
+Rakendus valib kuupäeva järgi õige nädala. Nädalavahetusel näitab ta järgmise nädala esmaspäeva ja teisipäeva, kui järgmise nädala plokk on juba lisatud.
+
 Markdowni märgid ei ole kohustuslikud. Kui kopeerid menüü kodulehelt tavalise tekstina, tunneb parser ära ka sellise vormi:
 
 ```text
