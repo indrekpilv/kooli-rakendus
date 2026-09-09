@@ -4,9 +4,9 @@ Toitlustamise nädal 07.09 – 11.09
 
 #### Hommikusöök
 
-- Mingi muu puder
-- Võileib singiga, võisai juustuga
-- Mahlajook
+Kaerahelbepuder, keedis
+Võileib singiga, võisai juustuga
+Mahlajook
 
 #### Lõunasöök
 
