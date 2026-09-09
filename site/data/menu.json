@@ -1,0 +1,53 @@
+{
+  "title": "Nädalamenüü",
+  "weekLabel": "Näidisnädal",
+  "updated": "Asenda näidisandmed kooli päris menüüga.",
+  "demo": true,
+  "days": [
+    {
+      "day": "Esmaspäev",
+      "date": "",
+      "items": [
+        "Köögiviljasupp",
+        "Kana riisiga",
+        "Värske salat"
+      ]
+    },
+    {
+      "day": "Teisipäev",
+      "date": "",
+      "items": [
+        "Läätsesupp",
+        "Kartul, kaste ja lihapallid",
+        "Õun"
+      ]
+    },
+    {
+      "day": "Kolmapäev",
+      "date": "",
+      "items": [
+        "Kalapuljong",
+        "Pasta tomatikastmega",
+        "Porgandisalat"
+      ]
+    },
+    {
+      "day": "Neljapäev",
+      "date": "",
+      "items": [
+        "Kanasupp",
+        "Ahjukartul köögiviljadega",
+        "Jogurt"
+      ]
+    },
+    {
+      "day": "Reede",
+      "date": "",
+      "items": [
+        "Hernesupp",
+        "Kodune vormiroog",
+        "Puuvili"
+      ]
+    }
+  ]
+}

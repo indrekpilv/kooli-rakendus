@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="et">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#008c3a">
+    <meta name="description" content="Rakvere Eragümnaasiumi nädalamenüü.">
+    <title>Nädalamenüü | Rakvere Eragümnaasium</title>
+    <link rel="icon" type="image/png" href="assets/house-mark.png">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="app.js"></script>
+  </head>
+  <body data-page="menu">
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Rakvere Eragümnaasium – avaleht">
+          <img src="assets/house-mark.png" alt="Rakvere Eragümnaasiumi majamärk">
+          <span class="brand-name">
+            <strong>Rakvere</strong>
+            <small>Eragümnaasium</small>
+          </span>
+        </a>
+        <nav class="main-nav" aria-label="Põhinavigatsioon">
+          <a href="index.html">Avaleht</a>
+          <a class="active" href="menu.html">Nädalamenüü</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="page-intro" aria-labelledby="menu-title">
+          <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Tagasi avalehele</a>
+          <p class="eyebrow">Toitlustus</p>
+          <h1 id="menu-title">Nädalamenüü</h1>
+          <p>Siit leiad Rakvere Eragümnaasiumi koolinädala menüü.</p>
+          <div class="menu-meta" id="menu-meta">Laen menüüandmeid…</div>
+        </section>
+
+        <section class="menu-list" id="menu-list" aria-live="polite">
+          <div class="loading-state">Laen menüüandmeid…</div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div>
+          <strong>Rakvere Eragümnaasium</strong>
+          <span><a href="index.html">Tagasi avalehele</a></span>
+        </div>
+        <span class="footer-note">Nädalamenüü</span>
+      </footer>
+    </div>
+  </body>
+</html>
