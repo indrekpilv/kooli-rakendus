@@ -25,6 +25,14 @@ jobs:
       - name: Lae projekt
         uses: actions/checkout@v6
 
+      - name: Seadista Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Koosta menüü JSON
+        run: python scripts/menu_to_json.py
+
       - name: Seadista GitHub Pages
         uses: actions/configure-pages@v5
 
