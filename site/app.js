@@ -1,12 +1,12 @@
 const MENU_URL = `data/menu.json?v=${Date.now()}`;
 const ESTONIAN_WEEKDAYS = [
+  "Pühapäev",
   "Esmaspäev",
   "Teisipäev",
   "Kolmapäev",
   "Neljapäev",
   "Reede",
   "Laupäev",
-  "Pühapäev",
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -175,14 +175,12 @@ function renderFullMenu(container, menu) {
 
   if (meta) {
     meta.replaceChildren();
-    const weekLabel = document.createElement("strong");
-    weekLabel.textContent = selectedWeek?.weekLabel || menu.weekLabel || "Kooli nädalamenüü";
-    meta.append(weekLabel);
-    if (menu.updated) {
-      const updated = document.createElement("span");
-      updated.textContent = menu.updated;
-      meta.append(updated);
-    }
+    const weekLabel = selectedWeek?.weekLabel || menu.weekLabel || "";
+    const weekTitle = document.createElement("strong");
+    weekTitle.textContent = weekLabel
+      ? `Toitlustamise nädal ${weekLabel}`
+      : "Nädalamenüü";
+    meta.append(weekTitle);
   }
 
   if (menu.demo) {
