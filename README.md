@@ -15,7 +15,41 @@ Seejärel ava brauseris `http://localhost:8000`.
 
 ## Menüü muutmine
 
-Muuda faili `site/data/menu.json`. Veebilehe koodi ei ole vaja muuta. Pärast faili üleslaadimist GitHubi käivitub avaldamise töövoog automaatselt.
+Muuda faili `site/data/menu.md`. Kasuta sama Markdowni vormi nagu kooli kodulehel:
+
+```markdown
+Toitlustamise nädal 07.09 – 11.09
+
+### Esmaspäev
+
+#### Hommikusöök
+
+- Kaerahelbepuder, keedis
+- Võileib singiga
+
+#### Lõunasöök
+
+- Kanakotlet, kartul ja salat
+```
+
+GitHub Actions teisendab faili automaatselt failiks `site/data/menu.json` ja avaldab selle. JSON-i ei ole vaja käsitsi muuta.
+
+Markdowni märgid ei ole kohustuslikud. Kui kopeerid menüü kodulehelt tavalise tekstina, tunneb parser ära ka sellise vormi:
+
+```text
+Esmaspäev
+
+Hommikusöök
+
+Kaerahelbepuder, keedis
+Võileib singiga
+
+Lõunasöök
+
+Kanakotlet, kartul ja salat
+```
+
+Oluline on, et päevad, toidukorrad ja menüüread jääksid eraldi ridadele.
 
 ## GitHub Pagesi seadistamine
 
