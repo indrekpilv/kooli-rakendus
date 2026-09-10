@@ -85,6 +85,7 @@ function bindControls() {
       state.query = "";
       state.selectedId = getEntities(type)[0]?.id || "";
       if (search) search.value = "";
+      closeSearchResults();
       updateUrl();
       renderTimetable();
     });
