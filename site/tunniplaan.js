@@ -87,12 +87,9 @@ function bindControls() {
       if (search) search.value = "";
       updateUrl();
       renderTimetable();
-      search?.focus();
-      openSearchResults();
     });
   });
 
-  search?.addEventListener("focus", () => openSearchResults());
   search?.addEventListener("click", () => openSearchResults());
   search?.addEventListener("input", (event) => {
     state.query = event.target.value;
