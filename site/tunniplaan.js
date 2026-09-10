@@ -168,6 +168,7 @@ function getSelectedEntity() {
 }
 
 function renderTimetable() {
+  closeSearchResults();
   renderTabs();
   renderSearchResults();
   renderDetail();

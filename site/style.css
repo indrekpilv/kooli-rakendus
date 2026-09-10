@@ -739,6 +739,10 @@ a.service-card:hover {
   box-shadow: 0 18px 34px rgba(13, 75, 43, 0.15);
 }
 
+.search-results[hidden] {
+  display: none;
+}
+
 .search-result {
   display: flex;
   align-items: center;
