@@ -42,23 +42,14 @@
               <button class="timetable-tab" type="button" role="tab" aria-selected="false" data-entity-type="teacher">Õpetajad</button>
               <button class="timetable-tab" type="button" role="tab" aria-selected="false" data-entity-type="room">Ruumid</button>
             </div>
-            <label class="search-box" for="timetable-search">
-              <span class="search-label">Otsi</span>
-              <input id="timetable-search" type="search" placeholder="Otsi klassi…" autocomplete="off">
-            </label>
+            <div class="search-box">
+              <label class="search-label" for="timetable-search">Otsi</label>
+              <input id="timetable-search" type="search" placeholder="Otsi klassi…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="search-results" aria-expanded="false">
+              <div class="search-results" id="search-results" role="listbox" hidden></div>
+            </div>
           </div>
 
           <div class="timetable-layout">
-            <aside class="entity-panel" aria-label="Tunniplaani valik">
-              <div class="panel-heading">
-                <h2 id="entity-panel-title">Klassid</h2>
-                <span id="entity-count"></span>
-              </div>
-              <div class="entity-list" id="entity-list">
-                <div class="loading-state">Laen tunniplaani…</div>
-              </div>
-            </aside>
-
             <section class="detail-panel" id="timetable-detail" aria-live="polite">
               <div class="loading-state">Laen tunniplaani…</div>
             </section>

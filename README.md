@@ -73,7 +73,7 @@ Untise XML-fail asub failis `data/tunniplaan.xml`. Kui Untisest tuleb uus XML:
 
 `deploy.yml` faili ei ole tavapärase XML-i vahetamise korral vaja muuta.
 
-Tunniplaani lehel saab otsida klasse, õpetajaid ja ruume. Vaikimisi kuvatakse valitud objekti tänane koolipäev vertikaalse loendina; päeva saab vahetada tunniplaani kohal olevate päevanuppudega. Valitud vaate võib salvestada vaikevaateks ning soovi korral avada ka nädalavaate või tunniplaani välja printida.
+Tunniplaani lehel saab valida klassid, õpetajad või ruumid. Otsinguväljale klõpsates avaneb vastava valiku rippmenüü ning nime kirjutamisel nimekiri filtreerub kohe. Vaikimisi kuvatakse valitud objekti tänane koolipäev vertikaalse loendina; päeva saab vahetada tunniplaani kohal olevate päevanuppudega. Valitud vaate võib salvestada vaikevaateks ning soovi korral avada ka nädalavaate või tunniplaani välja printida.
 
 ## GitHub Pagesi seadistamine
 

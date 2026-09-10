@@ -74,6 +74,9 @@ function initializeSelection() {
 }
 
 function bindControls() {
+  const search = document.querySelector("#timetable-search");
+  const results = document.querySelector("#search-results");
+
   document.querySelectorAll("[data-entity-type]").forEach((button) => {
     button.addEventListener("click", () => {
       const type = button.dataset.entityType;
@@ -81,23 +84,47 @@ function bindControls() {
       state.entityType = type;
       state.query = "";
       state.selectedId = getEntities(type)[0]?.id || "";
-      document.querySelector("#timetable-search").value = "";
+      if (search) search.value = "";
       updateUrl();
       renderTimetable();
+      search?.focus();
+      openSearchResults();
     });
   });
 
-  document.querySelector("#timetable-search")?.addEventListener("input", (event) => {
+  search?.addEventListener("focus", () => openSearchResults());
+  search?.addEventListener("click", () => openSearchResults());
+  search?.addEventListener("input", (event) => {
     state.query = event.target.value;
-    renderEntityList();
+    openSearchResults();
   });
 
-  document.querySelector("#entity-list")?.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-entity-id]");
+  search?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeSearchResults();
+      search.blur();
+      return;
+    }
+
+    if (event.key === "Enter") {
+      const firstResult = results?.querySelector("[data-search-entity-id]");
+      if (firstResult) {
+        event.preventDefault();
+        selectEntity(firstResult.dataset.searchEntityId);
+      }
+    }
+  });
+
+  results?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-search-entity-id]");
     if (!button) return;
-    state.selectedId = button.dataset.entityId;
-    updateUrl();
-    renderTimetable();
+    selectEntity(button.dataset.searchEntityId);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".search-box") && !event.target.closest("[data-entity-type]")) {
+      closeSearchResults();
+    }
   });
 
   document.querySelector("#timetable-detail")?.addEventListener("click", (event) => {
@@ -144,16 +171,14 @@ function getSelectedEntity() {
 
 function renderTimetable() {
   renderTabs();
-  renderEntityList();
+  renderSearchResults();
   renderDetail();
 }
 
 function renderTabs() {
   const config = FILTER_CONFIG[state.entityType];
-  const title = document.querySelector("#entity-panel-title");
   const search = document.querySelector("#timetable-search");
 
-  if (title) title.textContent = config.title;
   if (search) search.placeholder = config.placeholder;
 
   document.querySelectorAll("[data-entity-type]").forEach((button) => {
@@ -163,31 +188,55 @@ function renderTabs() {
   });
 }
 
-function renderEntityList() {
-  const list = document.querySelector("#entity-list");
-  const count = document.querySelector("#entity-count");
-  if (!list) return;
-
+function renderSearchResults() {
+  const results = document.querySelector("#search-results");
+  if (!results) return;
   const entities = getEntities().filter((entity) => matchesQuery(entity.name, state.query));
-  if (count) count.textContent = `${entities.length}`;
-  list.replaceChildren();
+  results.replaceChildren();
 
   if (entities.length === 0) {
     const empty = document.createElement("div");
-    empty.className = "empty-state entity-empty";
+    empty.className = "search-result-empty";
     empty.textContent = "Sobivaid vasteid ei leitud.";
-    list.append(empty);
+    results.append(empty);
     return;
   }
 
   entities.forEach((entity) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = `entity-item${entity.id === state.selectedId ? " is-selected" : ""}`;
-    button.dataset.entityId = entity.id;
+    button.className = `search-result${entity.id === state.selectedId ? " is-selected" : ""}`;
+    button.dataset.searchEntityId = entity.id;
     button.innerHTML = `<span>${escapeHtml(entity.name)}</span><span aria-hidden="true">→</span>`;
-    list.append(button);
+    results.append(button);
   });
+}
+
+function openSearchResults() {
+  const results = document.querySelector("#search-results");
+  const search = document.querySelector("#timetable-search");
+  if (!results || !search) return;
+  renderSearchResults();
+  results.hidden = false;
+  search.setAttribute("aria-expanded", "true");
+}
+
+function closeSearchResults() {
+  const results = document.querySelector("#search-results");
+  const search = document.querySelector("#timetable-search");
+  if (results) results.hidden = true;
+  if (search) search.setAttribute("aria-expanded", "false");
+}
+
+function selectEntity(identifier) {
+  if (!getEntities().some((entity) => entity.id === identifier)) return;
+  state.selectedId = identifier;
+  state.query = "";
+  const search = document.querySelector("#timetable-search");
+  if (search) search.value = "";
+  closeSearchResults();
+  updateUrl();
+  renderTimetable();
 }
 
 function renderDetail() {
@@ -473,10 +522,10 @@ function escapeHtml(value) {
 }
 
 function renderTimetableError(error) {
-  const list = document.querySelector("#entity-list");
+  const results = document.querySelector("#search-results");
   const detail = document.querySelector("#timetable-detail");
   const message = "Tunniplaani laadimine ebaõnnestus. Kontrolli, kas tunniplaani JSON on GitHub Actionsiga loodud.";
-  [list, detail].forEach((target) => {
+  [results, detail].forEach((target) => {
     if (!target) return;
     target.replaceChildren();
     const empty = document.createElement("div");
