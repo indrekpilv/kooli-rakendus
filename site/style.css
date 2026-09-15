@@ -885,9 +885,9 @@ a.service-card:hover {
 
 .day-schedule-row {
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
+  grid-template-columns: 126px minmax(0, 1fr);
   gap: 8px;
-  min-height: 75px;
+  min-height: 84px;
 }
 
 .day-period-label,
@@ -903,15 +903,27 @@ a.service-card:hover {
   padding: 10px 12px;
   border-radius: 12px;
   color: var(--green-900);
+  background: #f7fbf7;
 }
 
 .day-period-label strong {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
 }
 
-.day-period-label span {
-  color: var(--muted);
-  font-size: 0.72rem;
+.day-period-label .period-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--green-700);
+  font-size: 0.77rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.period-time-icon {
+  color: var(--green-700);
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .day-period-content {
@@ -1001,26 +1013,110 @@ a.service-card:hover {
 
 .lesson-block {
   display: grid;
-  gap: 3px;
-  padding: 9px;
+  gap: 8px;
+  min-width: 0;
+  padding: 11px 13px;
   border: 1px solid #dcece0;
   border-radius: 10px;
   color: #355244;
   background: #f8fcf8;
-  font-size: 0.72rem;
   line-height: 1.3;
 }
 
-.lesson-block strong {
+.lesson-subject {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lesson-fact-label {
+  color: var(--muted);
+  font-size: 0.61rem;
+  font-weight: 850;
+  letter-spacing: 0.07em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.lesson-subject-value {
+  overflow-wrap: anywhere;
   color: var(--green-900);
-  font-size: 0.8rem;
+  font-size: 0.94rem;
   line-height: 1.2;
 }
 
-.lesson-block small {
+.lesson-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.15fr) minmax(105px, 0.8fr);
+  gap: 7px;
+  min-width: 0;
+}
+
+.lesson-fact {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 7px 8px;
+  border: 1px solid #e3efe5;
+  border-radius: 8px;
+  background: white;
+}
+
+.lesson-fact-value {
+  overflow-wrap: anywhere;
+  color: #355244;
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.lesson-fact-room {
+  border-color: #bfe2c5;
+  background: #eff9f1;
+}
+
+.lesson-fact-room .lesson-fact-label,
+.lesson-fact-room .lesson-fact-value {
   color: var(--green-700);
+}
+
+.lesson-fact-room .lesson-fact-value {
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.lesson-block-compact {
+  gap: 4px;
+  padding: 8px;
+}
+
+.lesson-block-compact .lesson-subject-value {
+  font-size: 0.76rem;
+}
+
+.lesson-block-compact .lesson-facts {
+  grid-template-columns: 1fr;
+  gap: 2px;
+}
+
+.lesson-block-compact .lesson-fact {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.lesson-block-compact .lesson-fact-label {
+  display: inline;
+  margin-right: 4px;
+  font-size: 0.55rem;
+}
+
+.lesson-block-compact .lesson-fact-value {
+  font-size: 0.66rem;
+}
+
+.lesson-block-compact .lesson-fact-room .lesson-fact-value {
   font-size: 0.68rem;
-  font-weight: 750;
 }
 
 .lesson-block.is-active {
@@ -1088,7 +1184,7 @@ a.service-card:hover {
   }
 
   .day-schedule-row {
-    grid-template-columns: 82px minmax(0, 1fr);
+    grid-template-columns: 90px minmax(0, 1fr);
     gap: 6px;
   }
 
@@ -1097,11 +1193,45 @@ a.service-card:hover {
   }
 
   .day-period-label strong {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
   }
 
-  .day-period-label span {
+  .day-period-label .period-time {
+    gap: 3px;
+    color: var(--green-700);
     font-size: 0.65rem;
+  }
+
+  .period-time-icon {
+    font-size: 0.8rem;
+  }
+
+  .lesson-block-detailed {
+    padding: 9px;
+  }
+
+  .lesson-subject-value {
+    font-size: 0.86rem;
+  }
+
+  .lesson-facts {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .lesson-fact {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 5px 7px;
+  }
+
+  .lesson-fact-value {
+    font-size: 0.73rem;
+  }
+
+  .lesson-fact-room .lesson-fact-value {
+    font-size: 0.79rem;
   }
 }
 

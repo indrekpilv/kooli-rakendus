@@ -1,82 +1,83 @@
-Toitlustamise nädal 14.09 – 18.09
+Toitlustamise nädal 07.09 – 11.09
 
 ### Esmaspäev
 
 #### Hommikusöök
 
-Riisihelbepuder, keedis
-Võileib vorstiga, võisai juustuga
-Mahlajook
+- Kaerahelbepuder, keedis
+- Võileib singiga, võisai juustuga
+- Mahlajook
 
 #### Lõunasöök
 
-1. - 3. klass: Risoto kanaga, külm kaste, leib
-4. - 12. klass: Kiievi kotlet, kartul, riis, soe kaste, röstitud köögiviljad, leib
-Kõrvitsasalat, kapsasalat porgandiga
-Piim, keefir (koolikava)
-Õun
+- 1\. – 3. klass: Pilaff, külm kaste, leib
+- 4\. – 12. klass: Kanakotlet, kartul, riis, soe kaste, röstitud köögiviljad, leib
+- Kapsa-tomati-kurgisalat hapukoorega
+- Piim, keefir (koolikava)
+- Apelsin
 
 ### Teisipäev
 
 #### Hommikusöök
 
-Nisuhelbepuder, keedis
-Võileib singiga, sai määrdejuustuga
-Piim (koolikava)
+- 8-viljapuder, keedis
+- Võileib vorstiga, sai määrdejuustuga
+- Piim (koolikava)
 
 #### Lõunasöök
 
-1. - 12. klass: Rassolnik, hapukoor, leib
-Leivakreem, toormoos
-10. - 12. klass: Koorene sealihakaste porgandiga, kartul, leib
-Kapsasalat peediga
-Piim, keefir (koolikava)
-Paprika
+- 1\. – 12. klass: Borš, hapukoor, leib
+- Hapukooredessert, toormoos
+- 10\. – 12. klass: Vorstikaste, kartul, makaron, leib
+- Kapsa-porgandi-porrusalat
+- Piim, keefir (koolikava)
+- Porgand (koolikava)
 
 ### Kolmapäev
 
 #### Hommikusöök
 
-7-viljapuder, keedis
-Võileib vorstiga, sai pasteediga
-Tee
+- Piima-makaronisupp
+- Võileib heeringaga, keedetud muna, võisai juustuga
 
 #### Lõunasöök
 
-1. - 3. klass: Guljašš, kartul, leib
-4. - 12. klass: Ahjukana ürtidega, kartul, riis, soe kaste, röstitud köögiviljad, leib
-Porgandi-kapsasalat, kapsasalat kurgi ja maisiga
-Piim, keefir (koolikava)
-Banaan
+- 1\. – 3. klass: Sealiharoog köögiviljadega, leib
+- 4\. – 12. klass: Kartulivorm sealihaga, külm kaste, röstitud köögiviljad, leib
+- Toorsalat, kapsasalat kurgi ja paprikaga
+- Piim, keefir (koolikava)
+- Ploom, (koolikava)
 
 ### Neljapäev
 
 #### Hommikusöök
 
-Odrahelbepuder, keedis
-Võileib singiga, võisai juustuga
-Kakao
+- Mannapuder, keedis
+- Võileib vorstiga, sai pasteediga
+- Kakao
 
 #### Lõunasöök
 
-1. - 12. klass: Läätsesupp, leib
-Marjakissell, vahukoor
-10. - 12. klass: Makaronid hakklihaga, külm kaste, leib
-Kapsasalat marineeritud kurgiga
-Piim, keefir (koolikava)
-Porgand (koolikava)
+- 1\. – 12. klass: Kana-paprikasupp, leib
+- Mannavaht, piim
+- 10\. – 12. klass: Riisiroog kana ja köögiviljadega, külm kaste, leib
+- Segasalat, kapsasalat tomati ja maisiga
+- Piim, keefir (koolikava)
+- Nuikapsas (koolikava)
 
 ### Reede
 
 #### Hommikusöök
 
-Piima-riisisupp
-Võileib heeringaga, keedetud muna, võisai juustuga
+- Rukkihelbepuder, keedis
+- Võileib singiga, võisai juustuga
+- Tee
 
 #### Lõunasöök
 
-1. - 3. klass: Ühepajatoit sealihaga, hapukoor, leib
-4. - 12. klass: Ahjus küpsetatud sealiha, kartul, röstitud köögiviljad, soe kaste, leib
-Peedisalat, kapsasalat kodujuustu, kurgi ja tomatiga
-Piim, keefir (koolikava)
-Viinamari
+- 1\. – 3. klass: Hakklihakaste, kartul, leib
+- 4\. – 12. klass: Kanafilee juustuga, riis, kartul, röstitud köögiviljad, soe kaste, leib
+- Peedisalat, kapsasalat redise kurgi ja porgandiga
+- Piim, keefir (koolikava)
+- Pirn (koolikava)
+- Paprika (koolikava)

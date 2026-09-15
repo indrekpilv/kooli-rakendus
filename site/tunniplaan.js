@@ -343,8 +343,16 @@ function createDaySchedule(lessons) {
     const periodNumberLabel = document.createElement("strong");
     periodNumberLabel.textContent = `${periodNumber}. tund`;
     const periodTime = document.createElement("span");
-    periodTime.textContent = `${period?.start || ""}–${period?.end || ""}`;
-    label.append(periodNumberLabel, periodTime);
+    periodTime.className = "period-time";
+    const periodTimeIcon = document.createElement("span");
+    periodTimeIcon.className = "period-time-icon";
+    periodTimeIcon.setAttribute("aria-hidden", "true");
+    periodTimeIcon.textContent = "◷";
+    const periodTimeText = document.createElement("span");
+    periodTimeText.textContent = `${period?.start || ""}–${period?.end || ""}`;
+    periodTime.append(periodTimeIcon, periodTimeText);
+    label.append(periodNumberLabel);
+    if (period?.start || period?.end) label.append(periodTime);
 
     const content = document.createElement("div");
     content.className = "day-period-content";
@@ -358,7 +366,7 @@ function createDaySchedule(lessons) {
       empty.textContent = "Vaba tund";
       content.append(empty);
     } else {
-      matching.forEach(({ lesson, slot }) => content.append(createLessonBlock(lesson, slot)));
+        matching.forEach(({ lesson, slot }) => content.append(createLessonBlock(lesson, slot, { detailed: true })));
     }
 
     row.append(label, content);
@@ -407,7 +415,7 @@ function createWeekGrid(lessons) {
         empty.textContent = "–";
         cell.append(empty);
       } else {
-        matching.forEach(({ lesson, slot }) => cell.append(createLessonBlock(lesson, slot)));
+        matching.forEach(({ lesson, slot }) => cell.append(createLessonBlock(lesson, slot, { detailed: false })));
       }
       grid.append(cell);
     });
@@ -430,26 +438,47 @@ function getDefaultDay() {
   return ESTONIAN_DAYS.some((day) => day.number === today) ? today : 1;
 }
 
-function createLessonBlock(lesson, slot) {
+function createLessonBlock(lesson, slot, { detailed = false } = {}) {
   const block = document.createElement("article");
   const active = isActiveSlot(slot);
-  block.className = `lesson-block${active ? " is-active" : ""}`;
+  block.className = `lesson-block ${detailed ? "lesson-block-detailed" : "lesson-block-compact"}${active ? " is-active" : ""}`;
 
-  const subject = document.createElement("strong");
-  subject.textContent = lesson.subjects.join(", ") || "Tund";
+  const subject = document.createElement("div");
+  subject.className = "lesson-subject";
+  const subjectLabel = document.createElement("span");
+  subjectLabel.className = "lesson-fact-label";
+  subjectLabel.textContent = "Aine";
+  const subjectValue = document.createElement("strong");
+  subjectValue.className = "lesson-subject-value";
+  subjectValue.textContent = lesson.subjects.join(", ") || "Tund";
+  subject.append(subjectLabel, subjectValue);
   block.append(subject);
 
-  const time = document.createElement("small");
-  time.textContent = `${slot.start}–${slot.end}`;
-  block.append(time);
+  const facts = [
+    { label: "Klass", value: lesson.classes.join(", ") },
+    { label: "Õpetaja", value: lesson.teachers.join(", ") },
+    { label: "Ruum", value: slot.room || lesson.rooms.join(", "), emphasis: true },
+  ].filter((fact) => fact.value);
 
-  const detail = document.createElement("span");
-  const parts = [];
-  if (state.entityType !== "teacher" && lesson.teachers.length) parts.push(lesson.teachers.join(", "));
-  if (state.entityType !== "class" && lesson.classes.length) parts.push(lesson.classes.join(", "));
-  if (slot.room) parts.push(slot.room);
-  detail.textContent = parts.join(" · ");
-  if (detail.textContent) block.append(detail);
+  if (facts.length) {
+    const factGrid = document.createElement("div");
+    factGrid.className = "lesson-facts";
+
+    facts.forEach(({ label, value, emphasis }) => {
+      const fact = document.createElement("div");
+      fact.className = `lesson-fact${emphasis ? " lesson-fact-room" : ""}`;
+      const factLabel = document.createElement("span");
+      factLabel.className = "lesson-fact-label";
+      factLabel.textContent = label;
+      const factValue = document.createElement("span");
+      factValue.className = "lesson-fact-value";
+      factValue.textContent = value;
+      fact.append(factLabel, factValue);
+      factGrid.append(fact);
+    });
+
+    block.append(factGrid);
+  }
 
   return block;
 }
