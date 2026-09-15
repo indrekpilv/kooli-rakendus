@@ -1126,6 +1126,11 @@ a.service-card:hover {
 }
 
 @media (max-width: 600px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   .topbar {
     gap: 8px;
   }
@@ -1141,9 +1146,12 @@ a.service-card:hover {
   .timetable-controls {
     align-items: stretch;
     flex-direction: column;
+    width: 100%;
+    max-width: 100%;
   }
 
   .timetable-tabs {
+    width: 100%;
     justify-content: stretch;
   }
 
@@ -1153,7 +1161,27 @@ a.service-card:hover {
   }
 
   .search-box {
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
+  }
+
+  .search-results {
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search-result {
+    position: relative;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .search-result > span:last-child {
+    position: absolute;
+    right: 11px;
   }
 
   .detail-panel {
@@ -1174,22 +1202,30 @@ a.service-card:hover {
   }
 
   .day-tabs {
-    overflow-x: auto;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow: visible;
+    flex-wrap: initial;
   }
 
   .day-tab {
-    flex: 0 0 auto;
-    min-width: 92px;
+    width: 100%;
+    min-width: 0;
   }
 
   .day-schedule-row {
-    grid-template-columns: 90px minmax(0, 1fr);
-    gap: 6px;
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: 0;
   }
 
   .day-period-label {
-    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 10px 12px;
+    border-radius: 12px 12px 0 0;
   }
 
   .day-period-label strong {
@@ -1208,6 +1244,12 @@ a.service-card:hover {
 
   .lesson-block-detailed {
     padding: 9px;
+  }
+
+  .day-period-content {
+    padding: 8px;
+    border-top: 0;
+    border-radius: 0 0 12px 12px;
   }
 
   .lesson-subject-value {
