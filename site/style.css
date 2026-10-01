@@ -782,35 +782,36 @@ a.service-card:hover {
 }
 
 .detail-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) 74px;
+  align-items: center;
   gap: 20px;
-  margin-bottom: 8px;
+  margin-bottom: 18px;
+  text-align: center;
 }
 
-.detail-kicker {
-  margin-bottom: 5px;
-  color: var(--green-700);
-  font-size: 0.72rem;
-  font-weight: 850;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+.detail-heading {
+  min-width: 0;
 }
 
 .detail-header h2 {
-  margin-bottom: 5px;
+  margin-bottom: 7px;
   color: var(--green-900);
   font-size: clamp(1.65rem, 3vw, 2.35rem);
   letter-spacing: -0.05em;
-  line-height: 1;
+  line-height: 1.05;
 }
 
-.detail-subtitle,
-.timetable-note {
-  margin-bottom: 0;
+.detail-subtitle {
+  margin-bottom: 4px;
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.95rem;
+}
+
+.detail-school-year {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
 }
 
 .detail-actions {
@@ -820,15 +821,43 @@ a.service-card:hover {
   gap: 8px;
 }
 
+.detail-nav-button {
+  display: grid;
+  width: 74px;
+  height: 74px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #b5c0c6;
+  border-radius: 14px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.detail-nav-button:hover:not(:disabled) {
+  border-color: var(--green-700);
+  color: var(--green-800);
+  background: #f3fbf4;
+}
+
+.detail-nav-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.detail-actions-bottom {
+  justify-content: center;
+  margin: 0 0 18px;
+}
+
 .timetable-button {
   min-height: 40px;
   padding: 9px 13px;
   border-radius: 11px;
   font-size: 0.78rem;
-}
-
-.timetable-note {
-  margin: 17px 0 14px;
 }
 
 .day-tabs {
@@ -1180,12 +1209,38 @@ a.service-card:hover {
   }
 
   .detail-header {
-    flex-direction: column;
-    gap: 14px;
+    grid-template-columns: 54px minmax(0, 1fr) 54px;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .detail-nav-button {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    font-size: 1.7rem;
+  }
+
+  .detail-header h2 {
+    font-size: clamp(1.35rem, 7vw, 1.85rem);
+    line-height: 1.08;
+  }
+
+  .detail-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .detail-school-year {
+    font-size: 0.67rem;
   }
 
   .detail-actions {
     justify-content: flex-start;
+  }
+
+  .detail-actions-bottom {
+    justify-content: center;
+    width: 100%;
   }
 
   .timetable-button {
@@ -1234,7 +1289,8 @@ a.service-card:hover {
   }
 
   .lesson-block-detailed {
-    padding: 9px;
+    gap: 12px;
+    padding: 16px 18px;
   }
 
   .day-period-content {
@@ -1244,27 +1300,58 @@ a.service-card:hover {
   }
 
   .lesson-subject-value {
-    font-size: 0.86rem;
+    font-size: 1.12rem;
+    line-height: 1.25;
   }
 
   .lesson-facts {
-    grid-template-columns: 1fr;
-    gap: 4px;
+    display: block;
   }
 
   .lesson-fact {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    padding: 5px 7px;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .lesson-fact + .lesson-fact {
+    margin-top: 8px;
+  }
+
+  .lesson-subject > .lesson-fact-label {
+    display: none;
+  }
+
+  .lesson-fact-label {
+    display: inline;
+    margin-right: 5px;
+    color: var(--ink);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .lesson-fact-label::after {
+    content: ":";
   }
 
   .lesson-fact-value {
-    font-size: 0.73rem;
+    display: inline;
+    color: #355244;
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .lesson-fact-room {
+    border: 0;
+    background: transparent;
   }
 
   .lesson-fact-room .lesson-fact-value {
-    font-size: 0.79rem;
+    font-size: 1rem;
   }
 }
 

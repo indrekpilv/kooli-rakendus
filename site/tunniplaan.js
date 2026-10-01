@@ -8,9 +8,9 @@ const ESTONIAN_DAYS = [
 ];
 
 const FILTER_CONFIG = {
-  class: { collection: "classes", title: "Klassid", singular: "klass", placeholder: "Otsi klassi…" },
-  teacher: { collection: "teachers", title: "Õpetajad", singular: "õpetaja", placeholder: "Otsi õpetajat…" },
-  room: { collection: "rooms", title: "Ruumid", singular: "ruum", placeholder: "Otsi ruumi…" },
+  class: { collection: "classes", title: "Klassid", singular: "klass", heading: "Klass", placeholder: "Otsi klassi…" },
+  teacher: { collection: "teachers", title: "Õpetajad", singular: "õpetaja", heading: "Õpetaja", placeholder: "Otsi õpetajat…" },
+  room: { collection: "rooms", title: "Ruumid", singular: "ruum", heading: "Ruum", placeholder: "Otsi ruumi…" },
 };
 
 const state = {
@@ -126,6 +126,12 @@ function bindControls() {
   });
 
   document.querySelector("#timetable-detail")?.addEventListener("click", (event) => {
+    const entityStepButton = event.target.closest("[data-entity-step]");
+    if (entityStepButton) {
+      selectAdjacentEntity(Number(entityStepButton.dataset.entityStep));
+      return;
+    }
+
     const dayButton = event.target.closest("[data-selected-day]");
     if (dayButton) {
       state.selectedDay = Number(dayButton.dataset.selectedDay);
@@ -238,6 +244,14 @@ function selectEntity(identifier) {
   renderTimetable();
 }
 
+function selectAdjacentEntity(step) {
+  const entities = getEntities();
+  const currentIndex = entities.findIndex((entity) => entity.id === state.selectedId);
+  const target = entities[currentIndex + step];
+  if (!target) return;
+  selectEntity(target.id);
+}
+
 function renderDetail() {
   const panel = document.querySelector("#timetable-detail");
   const entity = getSelectedEntity();
@@ -257,18 +271,34 @@ function renderDetail() {
   header.className = "detail-header";
 
   const headingGroup = document.createElement("div");
-  const kicker = document.createElement("p");
-  kicker.className = "detail-kicker";
-  kicker.textContent = config.singular;
+  headingGroup.className = "detail-heading";
   const title = document.createElement("h2");
-  title.textContent = entity.name;
+  title.textContent = `${config.heading} ${entity.name} tunniplaan`;
   const subtitle = document.createElement("p");
   subtitle.className = "detail-subtitle";
-  subtitle.textContent = `${state.data.title}${state.data.schoolYear ? ` · ${state.data.schoolYear}` : ""}`;
-  headingGroup.append(kicker, title, subtitle);
+  subtitle.textContent = `Viimati uuendatud: ${formatSourceDate(state.data.sourceDate)}`;
+  const schoolYear = document.createElement("p");
+  schoolYear.className = "detail-school-year";
+  schoolYear.textContent = `${state.data.title}${state.data.schoolYear ? ` · ${state.data.schoolYear}` : ""}`;
+  headingGroup.append(title, subtitle, schoolYear);
+
+  const entities = getEntities();
+  const selectedIndex = entities.findIndex((item) => item.id === entity.id);
+  const previousButton = createEntityNavigationButton(
+    "←",
+    `Eelmine ${config.singular}`,
+    -1,
+    selectedIndex <= 0,
+  );
+  const nextButton = createEntityNavigationButton(
+    "→",
+    `Järgmine ${config.singular}`,
+    1,
+    selectedIndex === -1 || selectedIndex >= entities.length - 1,
+  );
 
   const actions = document.createElement("div");
-  actions.className = "detail-actions";
+  actions.className = "detail-actions detail-actions-bottom";
   const saveButton = createActionButton("Salvesta vaikevaateks", "button-quiet");
   saveButton.dataset.saveSelection = "true";
   const viewButton = createActionButton(
@@ -279,7 +309,7 @@ function renderDetail() {
   const printButton = createActionButton("Prindi", "button-primary");
   printButton.dataset.printTimetable = "true";
   actions.append(saveButton, viewButton, printButton);
-  header.append(headingGroup, actions);
+  header.append(previousButton, headingGroup, nextButton);
   panel.append(header);
 
   const selectedLessons = state.data.lessons.filter((lesson) => (
@@ -287,17 +317,23 @@ function renderDetail() {
     && lesson[`${state.entityType}Ids`].includes(entity.id)
   ));
 
-  const note = document.createElement("p");
-  note.className = "timetable-note";
-  note.textContent = `${selectedLessons.length} tunnikirjet · aktiivne tund on märgitud rohelisega.`;
-  panel.append(note);
-
   if (state.view === "day") {
-    panel.append(createDayTabs(), createDaySchedule(selectedLessons));
+    panel.append(createDayTabs(), actions, createDaySchedule(selectedLessons));
   } else {
-    panel.append(createWeekGrid(selectedLessons));
+    panel.append(actions, createWeekGrid(selectedLessons));
   }
   document.title = `${entity.name} · Tunniplaan | Rakvere Eragümnaasium`;
+}
+
+function createEntityNavigationButton(label, ariaLabel, step, disabled) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "detail-nav-button";
+  button.textContent = label;
+  button.setAttribute("aria-label", ariaLabel);
+  button.dataset.entityStep = step;
+  button.disabled = disabled;
+  return button;
 }
 
 function createActionButton(label, className) {
@@ -306,6 +342,11 @@ function createActionButton(label, className) {
   button.className = `button ${className} timetable-button`;
   button.textContent = label;
   return button;
+}
+
+function formatSourceDate(value) {
+  const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return match ? `${match[3]}.${match[2]}.${match[1]}` : String(value || "määramata");
 }
 
 function createDayTabs() {
@@ -454,11 +495,17 @@ function createLessonBlock(lesson, slot, { detailed = false } = {}) {
   subject.append(subjectLabel, subjectValue);
   block.append(subject);
 
-  const facts = [
-    { label: "Klass", value: lesson.classes.join(", ") },
-    { label: "Õpetaja", value: lesson.teachers.join(", ") },
-    { label: "Ruum", value: slot.room || lesson.rooms.join(", "), emphasis: true },
-  ].filter((fact) => fact.value);
+  const facts = [];
+  if (state.entityType !== "class" && lesson.classes.length) {
+    facts.push({ label: "Klass", value: lesson.classes.join(", ") });
+  }
+  if (state.entityType !== "teacher" && lesson.teachers.length) {
+    facts.push({ label: "Õpetaja", value: lesson.teachers.join(", ") });
+  }
+  if (state.entityType !== "room") {
+    const room = slot.room || lesson.rooms.join(", ");
+    if (room) facts.push({ label: "Ruum", value: room, emphasis: true });
+  }
 
   if (facts.length) {
     const factGrid = document.createElement("div");
