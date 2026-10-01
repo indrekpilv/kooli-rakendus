@@ -56,31 +56,14 @@ a {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  flex: 0 0 auto;
 }
 
 .brand img {
-  width: 45px;
-  height: 58px;
+  display: block;
+  width: 190px;
+  height: auto;
   object-fit: contain;
-}
-
-.brand-name {
-  display: grid;
-  gap: 0;
-  line-height: 1.05;
-}
-
-.brand-name strong {
-  color: var(--green-900);
-  font-size: 1.02rem;
-  letter-spacing: -0.02em;
-}
-
-.brand-name small {
-  color: var(--green-700);
-  font-size: 0.8rem;
-  letter-spacing: 0.01em;
 }
 
 .main-nav {
@@ -1358,25 +1341,27 @@ a.service-card:hover {
   }
 
   .topbar {
-    min-height: 78px;
+    min-height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 0 12px;
+  }
+
+  .brand {
+    flex: 1 0 100%;
+    justify-content: center;
   }
 
   .brand img {
-    width: 35px;
-    height: 46px;
-  }
-
-  .brand-name strong {
-    font-size: 0.92rem;
-  }
-
-  .brand-name small {
-    font-size: 0.7rem;
+    width: 155px;
   }
 
   .main-nav {
+    width: 100%;
+    justify-content: center;
     gap: 0;
     font-size: 0.76rem;
+    flex-wrap: wrap;
   }
 
   .main-nav a {
