@@ -1153,6 +1153,10 @@ a.service-card:hover {
     min-width: 0;
   }
 
+  .search-box input {
+    font-size: 16px;
+  }
+
   .search-results {
     right: 0;
     left: 0;
