@@ -253,6 +253,10 @@ p {
   padding: 84px 0 0;
 }
 
+.home-quick-links {
+  padding-top: 34px;
+}
+
 .section-heading {
   display: flex;
   align-items: end;
@@ -279,7 +283,7 @@ p {
 
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -1346,11 +1350,6 @@ a.service-card:hover {
   .service-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .service-card:last-child {
-    grid-column: 1 / -1;
-    min-height: 220px;
-  }
 }
 
 @media (max-width: 600px) {
@@ -1409,6 +1408,10 @@ a.service-card:hover {
 
   .section {
     padding-top: 60px;
+  }
+
+  .home-quick-links {
+    padding-top: 28px;
   }
 
   .section-heading {
