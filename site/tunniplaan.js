@@ -168,7 +168,7 @@ function bindControls() {
       return;
     }
 
-    if (event.target.closest("[data-print-timetable], [data-save-pdf]")) {
+    if (event.target.closest("[data-print-timetable]")) {
       window.print();
       return;
     }
@@ -315,13 +315,11 @@ function renderDetail() {
   const actions = document.createElement("div");
   actions.className = "detail-actions detail-actions-bottom";
   if (state.weekWindow) {
-    const printButton = createActionButton("Prindi", "button-primary");
+    const printButton = createActionButton("Prindi / salvesta PDF", "button-primary");
     printButton.dataset.printTimetable = "true";
-    const pdfButton = createActionButton("Salvesta PDF-ina", "button-quiet");
-    pdfButton.dataset.savePdf = "true";
     const closeButton = createActionButton("Sulge", "button-quiet");
     closeButton.dataset.closeWeekWindow = "true";
-    actions.append(printButton, pdfButton, closeButton);
+    actions.append(printButton, closeButton);
   } else {
     const saveButton = createActionButton("Salvesta minu lemmikusse", "button-quiet");
     saveButton.dataset.saveSelection = "true";

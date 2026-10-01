@@ -534,6 +534,14 @@ a.service-card:hover {
   padding: 42px 0 30px;
 }
 
+.page-title-only {
+  padding: 30px 0 20px;
+}
+
+.page-title-only h1 {
+  margin-bottom: 0;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -1266,14 +1274,15 @@ body.week-window .detail-panel {
   }
 
   .day-tabs {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: visible;
-    flex-wrap: initial;
   }
 
   .day-tab {
-    width: auto;
+    flex: 0 1 auto;
+    width: clamp(72px, 24vw, 96px);
     min-width: 0;
     min-height: 36px;
     padding: 8px 4px;
@@ -1546,6 +1555,10 @@ body.week-window .detail-panel {
 
   .page-intro {
     padding: 36px 0 30px;
+  }
+
+  .page-title-only {
+    padding: 26px 0 18px;
   }
 
   .back-link {
