@@ -638,6 +638,24 @@ a.service-card:hover {
   padding-bottom: 84px;
 }
 
+body.week-window .topbar,
+body.week-window .page-intro,
+body.week-window .timetable-controls,
+body.week-window .footer,
+body.week-window .back-link {
+  display: none;
+}
+
+body.week-window .timetable-shell {
+  padding: 28px 0;
+}
+
+body.week-window .detail-panel {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+
 .timetable-controls {
   display: flex;
   align-items: center;
@@ -1249,14 +1267,17 @@ a.service-card:hover {
 
   .day-tabs {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     overflow: visible;
     flex-wrap: initial;
   }
 
   .day-tab {
-    width: 100%;
+    width: auto;
     min-width: 0;
+    min-height: 36px;
+    padding: 8px 4px;
+    font-size: 0.7rem;
   }
 
   .day-schedule-row {
@@ -1353,6 +1374,10 @@ a.service-card:hover {
   .lesson-fact-room .lesson-fact-value {
     font-size: 1rem;
   }
+
+  body.week-window .timetable-shell {
+    padding: 20px 0;
+  }
 }
 
 @media print {
@@ -1364,6 +1389,7 @@ a.service-card:hover {
   .page-intro,
   .timetable-controls,
   .detail-actions,
+  .detail-nav-button,
   .footer,
   .back-link {
     display: none !important;

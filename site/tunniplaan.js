@@ -20,6 +20,7 @@ const state = {
   selectedId: "",
   selectedDay: 1,
   view: "day",
+  weekWindow: false,
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -48,6 +49,8 @@ function initializeSelection() {
     ? requestedDay
     : getDefaultDay();
   state.view = params.get("view") === "week" ? "week" : "day";
+  state.weekWindow = params.get("weekWindow") === "1";
+  if (state.weekWindow) state.view = "week";
 
   if (FILTER_CONFIG[requestedType]) {
     state.entityType = requestedType;
@@ -149,18 +152,29 @@ function bindControls() {
       return;
     }
 
+    const weekButton = event.target.closest("[data-open-week]");
+    if (weekButton) {
+      openWeekWindow();
+      return;
+    }
+
     const saveButton = event.target.closest("[data-save-selection]");
     if (saveButton) {
       saveSelection();
-      saveButton.textContent = "Vaikevaade salvestatud";
+      saveButton.textContent = "Lemmik salvestatud";
       window.setTimeout(() => {
-        if (saveButton.isConnected) saveButton.textContent = "Salvesta vaikevaateks";
+        if (saveButton.isConnected) saveButton.textContent = "Salvesta minu lemmikusse";
       }, 1800);
       return;
     }
 
-    if (event.target.closest("[data-print-timetable]")) {
+    if (event.target.closest("[data-print-timetable], [data-save-pdf]")) {
       window.print();
+      return;
+    }
+
+    if (event.target.closest("[data-close-week-window]")) {
+      window.close();
     }
   });
 }
@@ -175,6 +189,7 @@ function getSelectedEntity() {
 
 function renderTimetable() {
   closeSearchResults();
+  document.body.classList.toggle("week-window", state.weekWindow);
   renderTabs();
   renderSearchResults();
   renderDetail();
@@ -299,16 +314,27 @@ function renderDetail() {
 
   const actions = document.createElement("div");
   actions.className = "detail-actions detail-actions-bottom";
-  const saveButton = createActionButton("Salvesta vaikevaateks", "button-quiet");
-  saveButton.dataset.saveSelection = "true";
-  const viewButton = createActionButton(
-    state.view === "day" ? "Nädalavaade" : "Päevavaade",
-    "button-quiet",
-  );
-  viewButton.dataset.toggleView = "true";
-  const printButton = createActionButton("Prindi", "button-primary");
-  printButton.dataset.printTimetable = "true";
-  actions.append(saveButton, viewButton, printButton);
+  if (state.weekWindow) {
+    const printButton = createActionButton("Prindi", "button-primary");
+    printButton.dataset.printTimetable = "true";
+    const pdfButton = createActionButton("Salvesta PDF-ina", "button-quiet");
+    pdfButton.dataset.savePdf = "true";
+    const closeButton = createActionButton("Sulge", "button-quiet");
+    closeButton.dataset.closeWeekWindow = "true";
+    actions.append(printButton, pdfButton, closeButton);
+  } else {
+    const saveButton = createActionButton("Salvesta minu lemmikusse", "button-quiet");
+    saveButton.dataset.saveSelection = "true";
+    if (state.view === "day") {
+      const weekButton = createActionButton("Nädalavaade", "button-primary");
+      weekButton.dataset.openWeek = "true";
+      actions.append(saveButton, weekButton);
+    } else {
+      const dayButton = createActionButton("Päevavaade", "button-quiet");
+      dayButton.dataset.toggleView = "true";
+      actions.append(saveButton, dayButton);
+    }
+  }
   header.append(previousButton, headingGroup, nextButton);
   panel.append(header);
 
@@ -322,7 +348,24 @@ function renderDetail() {
   } else {
     panel.append(actions, createWeekGrid(selectedLessons));
   }
-  document.title = `${entity.name} · Tunniplaan | Rakvere Eragümnaasium`;
+  document.title = state.weekWindow
+    ? `${entity.name} · Nädalavaade | Rakvere Eragümnaasium`
+    : `${entity.name} · Tunniplaan | Rakvere Eragümnaasium`;
+}
+
+function openWeekWindow() {
+  const url = new URL(window.location.href);
+  url.searchParams.set("type", state.entityType);
+  url.searchParams.set("id", state.selectedId);
+  url.searchParams.set("day", String(state.selectedDay));
+  url.searchParams.set("view", "week");
+  url.searchParams.set("weekWindow", "1");
+  const weekWindow = window.open(
+    url.toString(),
+    "_blank",
+    "popup,width=1280,height=900,resizable=yes,scrollbars=yes",
+  );
+  weekWindow?.focus();
 }
 
 function createEntityNavigationButton(label, ariaLabel, step, disabled) {
