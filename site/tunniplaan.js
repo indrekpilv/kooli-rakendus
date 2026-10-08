@@ -508,7 +508,12 @@ function createWeekGrid(lessons) {
 }
 
 function getPeriodNumbers() {
-  return [...new Set((state.data.periods || []).map((period) => period.period))].sort((a, b) => a - b);
+  const lastScheduledPeriod = (state.data.lessons || []).reduce((lastPeriod, lesson) => (
+    lesson.slots.reduce((lastSlotPeriod, slot) => Math.max(lastSlotPeriod, slot.period), lastPeriod)
+  ), 0);
+  return [...new Set((state.data.periods || [])
+    .map((period) => period.period)
+    .filter((periodNumber) => periodNumber <= lastScheduledPeriod))].sort((a, b) => a - b);
 }
 
 function findPeriod(day, periodNumber) {
