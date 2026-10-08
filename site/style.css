@@ -503,6 +503,23 @@ a.service-card:hover {
   gap: 9px;
 }
 
+@media (min-width: 601px) {
+  .menu-list .day-card {
+    grid-column: 1 / -1;
+  }
+
+  .menu-list .day-content {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    align-items: start;
+    gap: 28px;
+  }
+
+  .menu-list .meal-section + .meal-section {
+    padding-left: 28px;
+    border-left: 1px solid var(--line);
+  }
+}
+
 .meal-heading {
   margin: 0;
   color: var(--green-700);
