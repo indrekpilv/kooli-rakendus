@@ -51,6 +51,74 @@ a {
   justify-content: space-between;
   gap: 28px;
   min-height: 92px;
+  flex-wrap: wrap;
+}
+
+.device-preview-controls {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.device-preview-controls button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  color: var(--muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.device-preview-controls button:hover,
+.device-preview-controls button[aria-pressed="true"] {
+  color: var(--green-800);
+  background: #eaf7ec;
+}
+
+.device-preview-controls button:focus-visible {
+  outline: 2px solid var(--green-700);
+  outline-offset: 2px;
+}
+
+.device-preview-controls svg {
+  width: 20px;
+  height: 20px;
+}
+
+.device-preview-active > .site-shell > main,
+.device-preview-active > .site-shell > .footer,
+.device-preview-active .topbar > .brand,
+.device-preview-active .topbar > .main-nav {
+  display: none;
+}
+
+.device-preview-active .topbar {
+  justify-content: center;
+  min-height: 76px;
+}
+
+.device-preview-stage {
+  overflow-x: auto;
+  padding: 0 16px 24px;
+}
+
+.device-preview-stage iframe {
+  box-sizing: content-box;
+  display: block;
+  height: calc(100dvh - 100px);
+  min-height: 480px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow-small);
 }
 
 .brand {
