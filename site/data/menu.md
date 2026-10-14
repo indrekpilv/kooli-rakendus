@@ -1,4 +1,4 @@
-Toitlustamise nädal 05.10 – 09.10
+Toitlustamise nädal 12.10 – 16.10
 
 ### Esmaspäev
 
